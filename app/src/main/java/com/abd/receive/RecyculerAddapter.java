@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,10 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class RecyculerAddapter extends RecyclerView.Adapter<RecyculerAddapter.MyViewHolder> {
-    List<ListModel> list;
+    List<APImodel> list;
     Context context;
 
-    public RecyculerAddapter(List<ListModel> list, Context context) {
+    public RecyculerAddapter(List<APImodel> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -41,16 +42,18 @@ public class RecyculerAddapter extends RecyclerView.Adapter<RecyculerAddapter.My
 
 
 
-        myViewHolder.begin.setText(list.get(i).getBegin());
-        myViewHolder.destination.setText(list.get(i).getDest());
 
-        Glide.with(context).load(list.get(i).getImgUrl()).into(myViewHolder.country);
+        Log.d("ssss",list.get(i).getArrCityName()[0]);
+        myViewHolder.begin.setText("From  "+list.get(i).getArrCityName()[0]);
+        myViewHolder.destination.setText("To   "+list.get(i).getArrCityName()[list.get(i).getArrCityName().length-1]);
+
+        Glide.with(context).load(list.get(i).getLogoCover()).into(myViewHolder.country);
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView begin,destination;

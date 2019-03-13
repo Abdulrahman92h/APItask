@@ -30,14 +30,12 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     private RecyculerAddapter adapter;
 
-    private List<ListModel>listModels;
+    private List<APImodel>listModels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-       // textViewResult = findViewById(R.id.text_view_result);
 
         listModels=new ArrayList<>();
 
@@ -55,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolder.class);
 
-        //getPosts();
-        //getComments();
        getData();
     }
 
@@ -74,21 +70,14 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<APImodel>> call, Response<List<APImodel>> response) {
                 if(!response.isSuccessful()){
                     textViewResult.setText("Code: " + response.code());
-                    Log.d("TTTTTTTTTTTTTTt",response.message()+"fgg"+response.code());
+                    Log.d("Tag",response.message()+" "+response.code());
                     return;
                 }
                 List<APImodel>mod=response.body();
                 for(APImodel model:mod){
-                    ListModel listModel=new ListModel(model.getArrCityName()[0],model.getArrCityName()[0],model.getLogoCover());
-
-                   /* textViewResult.append(model.getID()+model.getStops()+model.getDepartingAirportName()+
-                            model.getDepCityName()+model.getFlightNumber()+model.getTotalDuration()+model.getLogoCover()+model.getLogoCover()
-                    +model.getPrice()+model.getAirlineLogo()+model.getAirlineName()+model.getArrAirportName()
-                    +model.getArrCityName()+model.getArrDateAndTime()+model.getArrivalAirportName()+model.getDepDateAndTime()
-                    +model.getFlightModel());*/
-
-                   Log.d("sese",model.getArrCityName()[0]);
-                    listModels.add(listModel);
+                    model.getArrCityName();
+                    model.getLogoCover();
+                    listModels.add(model);
                     adapter.notifyDataSetChanged();
                 }
 
@@ -97,77 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<APImodel>> call, Throwable t) {
-                Log.d("TTTTTTTTTTTTTTt",t.getMessage())
-;
+                Log.d("Tag",t.getMessage());
             }
         });
     }
 
-    private void getPosts() {
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("userId", "1");
-        parameters.put("_sort", "id");
-        parameters.put("_order", "desc");
-
-        Call<List<Post>> call = jsonPlaceHolderApi.getPosts(4);
-
-        call.enqueue(new Callback<List<Post>>() {
-            @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-
-                if (!response.isSuccessful()) {
-                    textViewResult.setText("Code: " + response.code());
-                    return;
-                }
-
-                List<Post> posts = response.body();
-
-                for (Post post : posts) {
-                    String content = "";
-                    content += "ID: " + post.getId() + "\n";
-
-                    textViewResult.append(content);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
-                textViewResult.setText(t.getMessage());
-            }
-        });
-    }
-
-    private void getComments() {
-        Call<List<Comment>> call = jsonPlaceHolderApi
-                .getComments(3);
-
-        call.enqueue(new Callback<List<Comment>>() {
-            @Override
-            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
-
-                if (!response.isSuccessful()) {
-                    textViewResult.setText("Code: " + response.code());
-                    return;
-                }
-
-                List<Comment> comments = response.body();
-
-                for (Comment comment : comments) {
-                    String content = "";
-                    content += "ID: " + comment.getId() + "\n";
-                    content += "Post ID: " + comment.getPostId() + "\n";
-                    content += "Name: " + comment.getName() + "\n";
-                    content += "Email: " + comment.getEmail() + "\n";
-                    content += "Text: " + comment.getBody() + "\n\n";
-
-                    textViewResult.append(content);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Comment>> call, Throwable t) {
-                textViewResult.setText(t.getMessage());
-            }
-        });
-    }
 }
