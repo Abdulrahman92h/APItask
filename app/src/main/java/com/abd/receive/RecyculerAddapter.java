@@ -43,7 +43,7 @@ public class RecyculerAddapter extends RecyclerView.Adapter<RecyculerAddapter.My
 
 
 
-        Log.d("ssss",list.get(i).getArrCityName()[0]);
+       
         myViewHolder.begin.setText("From  "+list.get(i).getArrCityName()[0]);
         myViewHolder.destination.setText("To   "+list.get(i).getArrCityName()[list.get(i).getArrCityName().length-1]);
 
